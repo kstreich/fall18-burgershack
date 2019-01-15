@@ -67,7 +67,7 @@ namespace BurgerShack.Controllers
       }
     }
 
-    // DELETE api/Burgers/5
+    // DELETE api/Sides/5
     [HttpDelete("{id}")]
     public ActionResult<List<Burger>> Delete(int id)
     {
