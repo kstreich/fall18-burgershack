@@ -16,7 +16,7 @@ namespace BurgerShack.Controllers
     {
       new Side("French Fries", "Crispy Idaho Potatos", 1.99f),
       new Side("Tater Tots", "Amazing golden little bits of heaven", 2.15f),
-      new Side("Waffle fries", "Just like frie but more to 'em!", 1.99f)
+      new Side("Waffle fries", "Just like fries but more to 'em!", 1.99f)
     };
 
 
