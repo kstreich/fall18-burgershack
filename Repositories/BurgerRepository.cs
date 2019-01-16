@@ -1,35 +1,49 @@
 using System;
 using System.Collections.Generic;
-using BurgerShack.db;
+using System.Data;
+// using BurgerShack.db;
 using BurgerShack.Models;
+using Dapper;
 
 namespace BurgerShack.Repositories
 {
   public class BurgerRepository
   {
     // private readonly FakeDB _db;
+
+    private readonly IDbConnection _db;
+
+    public BurgerRepository(IDbConnection db)
+    {
+      _db = db;
+    }
+
+
+    //GET ALL REQ
     public IEnumerable<Burger> GetAll()
     {
-      return FakeDB.Burgers;
+      return _db.Query<Burger>("SELECT * FROM Burgers");
     }
 
     public Burger GetBurgerById(int id)
     {
-      try
-      {
-        return FakeDB.Burgers[id];
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return null;
-      }
+      return _db.QueryFirstOrDefault<Burger>($"SELECT * FROM Burgers WHERE id = @id", new { id });
     }
 
     public Burger AddBurger(Burger newBurger)
     {
-      FakeDB.Burgers.Add(newBurger);
+      int id = _db.ExecuteScalar<int>(@"INSERT INTO burgers 
+     (name, description, price)
+      VALUES(@Name, @Description, @Price);
+      SELECT LAST_INSERT_ID();", newBurger
+      );
+      if (id == 0)
+      {
+        return null;
+      }
+      newBurger.Id = id;
       return newBurger;
+
     }
 
     public Burger EditBurger(int id, Burger newBurger)
@@ -46,19 +60,12 @@ namespace BurgerShack.Repositories
       }
     }
 
+
     public bool DeleteBurger(int id)
     {
-      try
-      {
-        FakeDB.Burgers.Remove(FakeDB.Burgers[id]);
-        return true;
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return false;
-      }
+      int success = _db.Execute(@"DELETE FROM bugers WHERE id= @id", new { id });
+      if (success == 0) return false;
+      return true;
     }
-
   }
 }

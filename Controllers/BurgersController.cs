@@ -11,6 +11,8 @@ namespace BurgerShack.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
+
+  //CREATE A NEW CONSTRUCTOR HERE to reference your repository, this ties into the transient service thing that you added into the startup. cs folder
   public class BurgersController : ControllerBase
   {
     private readonly BurgerRepository _burgerRepo;
@@ -65,8 +67,22 @@ namespace BurgerShack.Controllers
     {
       return Created("/api/burger/", _burgerRepo.AddBurger(burger));
 
+      //ALSO -- return ok(_burgerRepo.AddBurger(burger))
+
       // Burgers.Add(burger);
       // return Burgers;
+
+
+      // int id = _db.ExecuteScalar<int>(@"
+      // INSERT......; 
+      // SELECT LAST_INSERT_ID()", new
+      //     {
+      //       burger.Name,
+      //       burger.Description,
+      //       burger.Price
+      //     });
+      //     burger.Id = id;
+      //     return burger;
     }
 
     // PUT api/Burgers/5
