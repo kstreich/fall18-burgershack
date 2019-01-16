@@ -36,6 +36,7 @@ namespace BurgerShack
     {
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
       services.AddTransient<BurgerRepository>();
+      services.AddTransient<DrinksRepository>();
       //provides IDbConnection to any class who needs it on instantiation
       services.AddTransient<IDbConnection>(x => CreateDBContext());
     }

@@ -50,7 +50,7 @@ namespace BurgerShack.Controllers
 
     // PUT api/Drinks/5
     [HttpPut("{id}")]
-    public ActionResult<List<Drink>> Put(int id, [FromBody] Drink drink)
+    public ActionResult<Drink> Put(int id, [FromBody] Drink drink)
     {
       Drink result = _drinkRepo.EditDrink(id, drink);
       if (result != null)
@@ -64,16 +64,11 @@ namespace BurgerShack.Controllers
     [HttpDelete("{id}")]
     public ActionResult<List<Drink>> Delete(int id)
     {
-      try
+      if (_drinkRepo.DeleteDrink(id))
       {
-        Drinks.Remove(Drinks[id]);
-        return Drinks;
+        return Ok("success");
       }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return NotFound("{\"error\": \"NO SUCH DRINK\"}");
-      }
+      return NotFound("No Drink to Delete");
     }
 
   }
