@@ -50,8 +50,13 @@ namespace BurgerShack.Repositories
     {
       try
       {
-        FakeDB.Burgers[id] = newBurger;
-        return newBurger;
+        return _db.QueryFirstOrDefault<Burger>($@"
+        UPDATE Burger SET
+          Price = @Price,
+          Description = @Description,
+          Name = @Name
+        WHERE Id = @Id;
+        SELECT * FROM Burgers Where id= @Id", newBurger);
       }
       catch (Exception ex)
       {
