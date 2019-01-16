@@ -67,6 +67,7 @@ namespace BurgerShack.Controllers
     {
       return Created("/api/burger/", _burgerRepo.AddBurger(burger));
 
+      #region
       //ALSO -- return ok(_burgerRepo.AddBurger(burger))
 
       // Burgers.Add(burger);
@@ -83,6 +84,7 @@ namespace BurgerShack.Controllers
       //     });
       //     burger.Id = id;
       //     return burger;
+      #endregion
     }
 
     // PUT api/Burgers/5

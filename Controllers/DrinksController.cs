@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BurgerShack.Models;
+using BurgerShack.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BurgerShack.Controllers
@@ -12,57 +13,51 @@ namespace BurgerShack.Controllers
   [ApiController]
   public class DrinksController : ControllerBase
   {
-    public List<Drink> Drinks = new List<Drink>()
+
+    private readonly DrinksRepository _drinkRepo;
+
+    public DrinksController(DrinksRepository drinkRepo)
     {
-      new Drink("Soda", 1.50f),
-      new Drink("Iced Tea", .85f),
-      new Drink("Sports Drink", 1.85f)
-  };
+      _drinkRepo = drinkRepo;
+    }
 
     // GET api/Drinks
     [HttpGet]
-    public IEnumerable<Drink> Get()
+    public ActionResult<IEnumerable<Drink>> Get()
     {
-      return Drinks;
+      return Ok(_drinkRepo.GetAll());
     }
 
     // GET api/Drinks/5
     [HttpGet("{id}")]
     public ActionResult<Drink> Get(int id)
     {
-      try
+      Drink result = _drinkRepo.GetDrinkById(id);
+      if (result != null)
       {
-        return Drinks[id];
+        return Ok(result);
       }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return NotFound("{\"error\": \"NO SUCH DRINK\"}");
-      }
+      return NotFound();
     }
 
     // POST api/Drinks
     [HttpPost]
     public ActionResult<List<Drink>> Post([FromBody] Drink drink)
     {
-      Drinks.Add(drink);
-      return Drinks;
+      return Created("/api/drinks/",
+      _drinkRepo.AddDrink(drink));
     }
 
     // PUT api/Drinks/5
     [HttpPut("{id}")]
     public ActionResult<List<Drink>> Put(int id, [FromBody] Drink drink)
     {
-      try
+      Drink result = _drinkRepo.EditDrink(id, drink);
+      if (result != null)
       {
-        Drinks[id] = drink;
-        return Drinks;
+        return result;
       }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return NotFound("{\"error\": \"NO SUCH DRINK\"}");
-      }
+      return NotFound();
     }
 
     // DELETE api/Drinks/5

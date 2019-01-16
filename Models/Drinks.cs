@@ -1,4 +1,5 @@
 
+
 namespace BurgerShack.Models
 {
   public class Drink
@@ -7,12 +8,14 @@ namespace BurgerShack.Models
 
     public float Price { get; set; }
 
+    public int Id { get; set; }
 
-    public Drink(string name, float price)
-    {
-      Name = name;
-      Price = price;
-    }
+
+    // public Drink(string name, float price)
+    // {
+    //   Name = name;
+    //   Price = price;
+    // }
   }
 
 }
