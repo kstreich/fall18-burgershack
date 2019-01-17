@@ -47,7 +47,7 @@ namespace BurgerShack.Controllers
       {
         return Ok(result);
       }
-      return NotFound();
+      return BadRequest();
       #region
       // try
       // {
@@ -66,6 +66,9 @@ namespace BurgerShack.Controllers
     public ActionResult<List<Burger>> Post([FromBody] Burger burger)
     {
       return Created("/api/burger/", _burgerRepo.AddBurger(burger));
+
+      //there's a different way to do this in the Library API project done in class
+
 
       #region
       //ALSO -- return ok(_burgerRepo.AddBurger(burger))
@@ -121,7 +124,7 @@ namespace BurgerShack.Controllers
       {
         return Ok("success");
       }
-      return NotFound("No burger to delete");
+      return BadRequest("No burger to delete");
 
       #region
       // try
